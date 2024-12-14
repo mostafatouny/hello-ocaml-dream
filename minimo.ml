@@ -17,7 +17,7 @@ let () =
         Dream.get "/:word"
             (fun request ->
                 Dream.html
-                @@ Template.render
+                @@ Pages.Template.render
                 @@ Dream.param request "word");
 
     ]
