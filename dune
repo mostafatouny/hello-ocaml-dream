@@ -1,5 +1,5 @@
 (executable
   (name minimo)
-  (modes byte)
+  ; (modes byte)
   (libraries caqti-driver-sqlite3 dream util pages)
   (preprocess (pps lwt_ppx)))
