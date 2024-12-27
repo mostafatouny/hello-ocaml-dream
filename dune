@@ -1,5 +1,13 @@
 (executable
-  (name minimo)
-  ; (modes byte)
-  (libraries caqti-driver-sqlite3 dream util pages)
-  (preprocess (pps lwt_ppx)))
+ (name main)
+ ; (modes byte)
+ (libraries dream util pages)
+ (preprocess (pps ppx_deriving.show lwt_ppx))
+)
+
+; dune exec ./mytoplevel.exe
+; (toplevel
+;   (name mytoplevel)
+;   (libraries caqti-driver-sqlite3 dream util pages)
+;   (preprocess (pps lwt_ppx))
+; )

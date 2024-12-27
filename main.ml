@@ -1,26 +1,10 @@
-module type DB = Caqti_lwt.CONNECTION
-module T = Caqti_type
+(* query requests *)
+module Qr = Util.Query
 
 let tasks_hardcoded = [
-    ("Write documentation", true);
-    ("Create examples", true);
-    ("Publish website", true);
-    ("Profit", false);
+    ("first task", true);
+    ("second task", false)
 ]
-
-(* let comments_hardcoded = [ *)
-(*     (1,"first comment"); *)
-(*     (2,"second comment"); *)
-(* ] *)
-
-let fetch_comments =
-  let query =
-    let open Caqti_request.Infix in
-    (T.unit ->* T.(t2 int string))
-    "SELECT id, text FROM comment" in
-  fun (module Db : DB) ->
-    let%lwt comments_or_error = Db.collect_list query () in
-    Caqti_lwt.or_fail comments_or_error
 
 let () =
     Dream.run
@@ -35,6 +19,11 @@ let () =
             |> Util.Ppx.show_string_list
             |> Dream.html);
 
+    Dream.get "/login"
+        (fun _ ->
+            Pages.Template.render_login
+            |> Dream.html);
+    
     Dream.get "/tasks"
         (fun _ ->
             Pages.Template.render_home tasks_hardcoded
@@ -48,6 +37,6 @@ let () =
    
     Dream.get "/comments"
         (fun request ->
-            let%lwt comments = Dream.sql request fetch_comments in
+            let%lwt comments = Dream.sql request Qr.fetch_comments in
             Dream.html( Pages.Template.render_comments comments ));
     ]

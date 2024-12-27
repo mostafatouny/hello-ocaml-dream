@@ -1,3 +1,6 @@
 (library
   (name util)
-  (preprocess (pps ppx_deriving.show) ))
+  (libraries caqti-driver-sqlite3 dream)
+  (preprocess (pps ppx_deriving.show lwt_ppx)
+  )
+)
