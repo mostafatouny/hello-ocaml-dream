@@ -1,6 +1,7 @@
 (library
   (name pages)
-  (libraries dream))
+  (libraries dream util)
+)
 
 (rule
   (targets template.ml)

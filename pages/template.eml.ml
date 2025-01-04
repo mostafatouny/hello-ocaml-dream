@@ -142,11 +142,19 @@ let render_comments comments =
   </body>
   </html>
 
-let render_tem tmpList =
+let render_tem (tmpList: (int * string * string * string * int * int option * int option) list) =
   <html>
   <body>
-%   tmpList |> List.iter (fun (id, name, password) ->
-      <p><%s id %><%s name %><%s password %></p>
+%   tmpList |> List.iter (fun (id, name, password, email, userType_id, academic_id, _) ->
+      <p>
+        <%s Util.Ppx.show_int id %><%s name %><%s password %><%s email %><%s Util.Ppx.show_int userType_id %>
+%       begin match academic_id with
+%       | Some _ ->
+            <a>Academic</a>
+%       | None ->
+          <a>Not Academic</a>
+%       end;
+      </p>
     <% ); %>
   </body>
   </html>

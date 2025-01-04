@@ -15,12 +15,18 @@ let () =
 
     Dream.get "/"
         (fun request ->
-            let%lwt users = Dream.sql request Qr.fetch_users in
-            users
-            (* |> Util.Ppx.show_tmp_list *)
-            |> Util.Ppx.show_int_string_list
+            let%lwt events = Dream.sql request Qr.fetch_events in
+            events
+            |> Util.Ppx.show_event_list
             |> Dream.html);
-            (* |> Pages.Template.render_tem *)
+
+    (* Dream.get "/" *)
+    (*     (fun request -> *)
+    (*         let%lwt users = Dream.sql request Qr.fetch_users in *)
+    (*         users *)
+    (*         (* |> Util.Ppx.show_user_list *) *)
+    (*         |> Pages.Template.render_tem *)
+    (*         |> Dream.html); *)
 
     Dream.get "/login"
         (fun _ ->
