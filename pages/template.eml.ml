@@ -44,8 +44,9 @@ let render_login =
                 </div>
             </article>
             <form>
+                <input type="email" name="email" placeholder="Email address" aria-label="Email address" autocomplete="email" value="retrieved from uri@example.com" disabled/>
                 <input type="text" name="firstname" placeholder="First name" aria-label="First name" required />
-                <input type="email" name="email" placeholder="Email address" aria-label="Email address" autocomplete="email" required />
+                <input type="password" name="password" placeholder="Password" required />
                 <input type="submit">
                 <input type="reset">
                 <button type="submit">Subscribe</button>
@@ -135,14 +136,17 @@ let render_task tasks task =
 let render_comments comments =
   <html>
   <body>
-
 %   comments |> List.iter (fun (_id, comment) ->
       <p><%s comment %></p>
     <% ); %>
+  </body>
+  </html>
 
-    <form method="POST" action="/comments/add">
-      <input name="text" autofocus>
-    </form>
-
+let render_tem tmpList =
+  <html>
+  <body>
+%   tmpList |> List.iter (fun (id, name, password) ->
+      <p><%s id %><%s name %><%s password %></p>
+    <% ); %>
   </body>
   </html>
