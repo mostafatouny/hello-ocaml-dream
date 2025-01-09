@@ -12,7 +12,7 @@ let render_head title =
 (* top navigation bar *)
 let render_bar buttons =
     <header>
-        <nav style="font-size: 1.50rem;">
+        <nav style="font-size: 1.2rem;">
             <ul>
                 <li><h1>Collectivae</h1></li>
             </ul>
@@ -24,15 +24,15 @@ let render_bar buttons =
         </nav>
     <header>
 
+(* footer *)
 let render_footer =
     <footer>
         <small> Made with love by volunteers </small>
     </footer>
 
-(* login *)
-let render_login =
+let render_home top_event_dates =
     <html>
-    <%s! render_head "Login" %>
+    <%s! render_head "Home" %>
     <body>
         <%s! render_bar [("Home", "/"); ("About", "/about");] %>
         
@@ -43,44 +43,27 @@ let render_login =
                     Hello body
                 </div>
             </article>
-            <form>
-                <input type="email" name="email" placeholder="Email address" aria-label="Email address" autocomplete="email" value="retrieved from uri@example.com" disabled/>
-                <input type="text" name="firstname" placeholder="First name" aria-label="First name" required />
-                <input type="password" name="password" placeholder="Password" required />
-                <input type="submit">
-                <input type="reset">
-                <button type="submit">Subscribe</button>
-            </form>
-
+            
             <article>
-                <header>February 2025</header>
-                <div>
-                    <form>
-                        <table>
-                            <tbody>
+                <header> Top Available Dates </header>
+                <table style="font-size:1rem">
+                    <thead>
+                        <tr>
+                            <td> Date </td>
+                            <td> Available Count </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+%                       top_event_dates |> List.iter (fun (_, date, count) ->
                             <tr>
-                              <td> hello </td>
-                              <td> hello </td>
+                                <td> <%s date %> </td>
+                                <td> <%s Util.Ppx.show_int count %> </td>
                             </tr>
-                            <tr>
-                              <td> hello </td>
-                              <td> hello </td>
-                            </tr>
-                            <tr>
-                              <td> hello </td>
-                              <td> hello </td>
-                            </tr>
-                            <tr>
-                              <td> hello </td>
-                              <td> hello </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </form>
-                </div>
-                <footer>
-                </footer>
+                        <% ); %>
+                    </tbody>
+                </table>
             </article>
+
             <article>
                 <header> Available Dates </header>
                 <form>
@@ -92,69 +75,16 @@ let render_login =
                     </fieldset>
                 </form>
             </article>
+
+            <form>
+                <input type="email" name="email" placeholder="Email address" aria-label="Email address" autocomplete="email" value="retrieved from uri@example.com" disabled/>
+                <input type="text" name="firstname" placeholder="First name" aria-label="First name" required />
+                <input type="password" name="password" placeholder="Password" required />
+                <input type="submit">
+                <input type="reset">
+                <button type="submit">Subscribe</button>
+            </form>
+
         </main>
     </body>
     </html>
-
-let render_home tasks =
-  <html>
-    <%s! render_head "Tasks" %>
-  <body>
-    <%s! render_bar [("Home", "/"); ("Add Task", "/add");] %>
-    <main>
-      <h1>Task List</h1>
-%     tasks |> List.iter begin fun (name, complete) ->
-        <article>
-          <p>Task <%s name %>: 
-%           if complete then begin
-              <strong>complete!</strong>
-%           end
-%           else begin
-              <strong>not complete.</strong>
-%           end;
-          </p>
-        </article>
-%     end;
-    </main>
-  </body>
-  </html>
-
-
-let render_task tasks task =
-  <html>
-  <body>
-%   begin match List.assoc_opt task tasks with
-%   | Some complete ->
-      <p>Task: <%s task %></p>
-      <p>Complete: <%B complete %></p>
-%   | None ->
-      <p>Task not found!</p>
-%   end;
-  </body>
-  </html>
-
-let render_comments comments =
-  <html>
-  <body>
-%   comments |> List.iter (fun (_id, comment) ->
-      <p><%s comment %></p>
-    <% ); %>
-  </body>
-  </html>
-
-let render_tem (tmpList: (int * string * string * string * int * int option * int option) list) =
-  <html>
-  <body>
-%   tmpList |> List.iter (fun (id, name, password, email, userType_id, academic_id, _) ->
-      <p>
-        <%s Util.Ppx.show_int id %><%s name %><%s password %><%s email %><%s Util.Ppx.show_int userType_id %>
-%       begin match academic_id with
-%       | Some _ ->
-            <a>Academic</a>
-%       | None ->
-          <a>Not Academic</a>
-%       end;
-      </p>
-    <% ); %>
-  </body>
-  </html>

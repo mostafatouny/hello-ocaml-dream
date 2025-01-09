@@ -1,4 +1,4 @@
-let show_int : int -> string = [%show: int]
+let show_int = [%show: int]
 let show_string_list : string list -> string = [%show: string list]
 
 let show_user_list : (int * string * string * string * int * int option * int option) list -> string = [%show: (int * string * string * string * int * int option * int option) list]
