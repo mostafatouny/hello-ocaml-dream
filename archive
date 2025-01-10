@@ -1,0 +1,13 @@
+(* Dream.get "/" *)
+(*     (fun request -> *)
+(*         let allHeader = Dream.all_headers request in *)
+(*             allHeader |> [%show: (string * string) list] |> Dream.html *)
+(*         ); *)
+
+(* Dream.get "/" *)
+(*     (fun request -> *)
+(*         let header = Dream.header request "Host" in *)
+(*         match header with *)
+(*             | Some t -> Dream.html(t) *)
+(*             | None -> Dream.html("header content not found") *)
+(*         ); *)

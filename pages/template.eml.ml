@@ -10,14 +10,14 @@ let render_head title =
     </head>
 
 (* top navigation bar *)
-let render_bar buttons =
+let render_bar =
     <header>
         <nav style="font-size: 1.2rem;">
             <ul>
                 <li><h1>Collectivae</h1></li>
             </ul>
             <ul>
-%           buttons |> List.iter begin fun (label, link) ->
+%           [ ("AUC Launch", "/event/1"); ("Home", "/"); ("About", "/about"); ] |> List.iter begin fun (label, link) ->
                 <li><a href="<%s link %>"> <%s label %> </a></li>
 %           end;
             </ul>
@@ -30,17 +30,18 @@ let render_footer =
         <small> Made with love by volunteers </small>
     </footer>
 
-let render_home top_event_dates =
+(* event *)
+let render_event id title desc top_event_dates =
     <html>
-    <%s! render_head "Home" %>
+    <%s! render_head title %>
     <body>
-        <%s! render_bar [("Home", "/"); ("About", "/about");] %>
-        
+        <%s! render_bar %>
+
         <main>
             <article>
                 <div style="text-align:center;">
-                    <h3> some title </h3>
-                    Hello body
+                    <h3> <%s title %> </h3>
+                    <%s desc %>
                 </div>
             </article>
             
@@ -56,7 +57,7 @@ let render_home top_event_dates =
                     <tbody>
 %                       top_event_dates |> List.iter (fun (_, date, count) ->
                             <tr>
-                                <td> <%s date %> </td>
+                                <td> <%s Util.Date.dateIsoToName date %> </td>
                                 <td> <%s Util.Ppx.show_int count %> </td>
                             </tr>
                         <% ); %>
@@ -65,26 +66,76 @@ let render_home top_event_dates =
             </article>
 
             <article>
-                <header> Available Dates </header>
-                <form>
+                <header> Submit </header>
+                <form action="/attendee/submit" method="get">
+                    <input name="event_id" value=<%s string_of_int id %> hidden>
+                    <h5> Available Dates </h5>
                     <fieldset role="group">
-                        <input type="date" name="date-1" aria-label="Date" value="2025-01-01" min="2024-12-01" max="2025-03-01">
-                        <input type="date" name="date-2" aria-label="Date">
-                        <input type="date" name="date-3" aria-label="Date">
+                        <input type="date" name="date-1"
+%                           if not (List.is_empty top_event_dates) then begin
+                                value=<%s List.hd top_event_dates |> (fun (_, date, _) -> String.sub date 0 10) %>
+%                           end;
+                            min="2025-1-20" max="2025-03-01" required>
+                        <select name="time-1" aria-label="Time" required>
+                          <option value="08:00:00">Morning 8:00 AM</option>
+                          <option value="18:00:00">Evening 6:00 PM</option>
+                        </select>
+                    </fieldset>
+                    <fieldset role="group">
+                        <input type="date" name="date-2" value="">
+                        <select name="time-2" aria-label="Time">
+                          <option selected></option>
+                          <option value="08:00:00">Morning 8:00 AM</option>
+                          <option value="18:00:00">Evening 6:00 PM</option>
+                        </select>
+                    </fieldset>
+                    <fieldset role="group">
+                        <input type="date" name="date-3">
+                        <select name="time-3" aria-label="Time">
+                          <option selected></option>
+                          <option value="08:00:00">Morning 8:00 AM</option>
+                          <option value="18:00:00">Evening 6:00 PM</option>
+                        </select>
+                    </fieldset>
+                    <h5> Name </h5>
+                    <fieldset role="group">
+                        <input type="text" name="firstname" placeholder="First" required />
+                        <input type="text" name="lastname" placeholder="Last" required />
+                    </fieldset>
+                    <h5> Email </h5>
+                    <input type="email" name="email" placeholder="Email" required />
+                    <h5> Affiliation </h5>
+                    <fieldset role="group">
+                        <input type="text" name="affiliation" placeholder="University or Company" required />
+                        <input type="text" name="position" placeholder="Position" required />
+                    </fieldset>
+                    <fieldset role="group">
                         <button type="submit">Submit</button>
+                        <input type="reset">
                     </fieldset>
                 </form>
             </article>
 
             <form>
-                <input type="email" name="email" placeholder="Email address" aria-label="Email address" autocomplete="email" value="retrieved from uri@example.com" disabled/>
-                <input type="text" name="firstname" placeholder="First name" aria-label="First name" required />
-                <input type="password" name="password" placeholder="Password" required />
-                <input type="submit">
-                <input type="reset">
-                <button type="submit">Subscribe</button>
             </form>
 
+        </main>
+    </body>
+    </html>
+
+(* request response alert *)
+let render_alert title para =
+    <html>
+    <%s! render_head "Alert" %>
+    <body>
+        <%s! render_bar %>
+        <main>
+            <article>
+                <div style="text-align:center;">
+                    <h3> <%s title %> </h3>
+                    <%s para %>
+                </div>
+            </article>
         </main>
     </body>
     </html>
