@@ -1,17 +1,24 @@
 (* query requests *)
 module Qr = Util.Query
 
-(* let tasks_hardcoded = [ *)
-(*     ("first task", true); *)
-(*     ("second task", false) *)
-(* ] *)
 
 let () =
-    Dream.run
+
+    (* fetch database path *)
+    let dbPath =
+        try Sys.getenv "DB_PATH"
+        with Not_found ->
+            raise (Failure "Database path is not set as an environment variable.") in
+
+    Dream.run ~interface:"0.0.0.0"
     @@ Dream.logger
-    @@ Dream.sql_pool "sqlite3:db.sqlite"
+    @@ Dream.sql_pool ("sqlite3:" ^ dbPath)
     @@ Dream.router [
     
+    Dream.get "/"
+        (fun request -> 
+            Dream.redirect request "/event/1");
+
     Dream.get "/attendee/submit"
         (fun request ->
             (* fetch submission as a list of key-value pairs. e.g. [ ("firstname", "john"); ("lastname", "doe"); .. ] *)

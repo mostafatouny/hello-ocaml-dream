@@ -1,0 +1,19 @@
+# laptop start script
+run.sh
+# database
+db.sqlite
+
+# opam local switch
+_opam/
+# dune build environment
+_build/
+
+# git
+.git/
+.gitignore
+
+# docker
+Dockerfile
+
+# fly
+fly.toml

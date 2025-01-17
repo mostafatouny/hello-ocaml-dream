@@ -14,7 +14,7 @@ let fetch_top_event_dates =
     let query =
         let open Caqti_request.Infix in
         ( T.int ->* T.(t3 int string int) )
-        ("SELECT event_id, STRFTIME('%Y-%m-%d', date) unique_day, COUNT(DISTINCT guest_id) count FROM guest_event WHERE event_id==$1 GROUP BY unique_day ORDER BY count DESC LIMIT 3") in
+        ("SELECT event_id, date, COUNT(DISTINCT guest_id) count FROM guest_event WHERE event_id==$1 GROUP BY date ORDER BY count DESC LIMIT 3") in
     fun event_id (module Db : DB) ->
         let%lwt response_or_error = Db.collect_list query event_id in
         Caqti_lwt.or_fail response_or_error

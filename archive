@@ -1,3 +1,8 @@
+(* let tasks_hardcoded = [ *)
+(*     ("first task", true); *)
+(*     ("second task", false) *)
+(* ] *)
+
 (* Dream.get "/" *)
 (*     (fun request -> *)
 (*         let allHeader = Dream.all_headers request in *)

@@ -75,15 +75,15 @@ let render_event id title desc top_event_dates =
 %                           if not (List.is_empty top_event_dates) then begin
                                 value=<%s List.hd top_event_dates |> (fun (_, date, _) -> String.sub date 0 10) %>
 %                           end;
-                            min="2025-1-20" max="2025-03-01" required>
-                        <select name="time-1" aria-label="Time" required>
+                            required>
+                        <select name="time-1" required>
                           <option value="08:00:00">Morning 8:00 AM</option>
-                          <option value="18:00:00">Evening 6:00 PM</option>
+                          <option selected value="18:00:00">Evening 6:00 PM</option>
                         </select>
                     </fieldset>
                     <fieldset role="group">
                         <input type="date" name="date-2" value="">
-                        <select name="time-2" aria-label="Time">
+                        <select name="time-2" >
                           <option selected></option>
                           <option value="08:00:00">Morning 8:00 AM</option>
                           <option value="18:00:00">Evening 6:00 PM</option>
@@ -91,7 +91,7 @@ let render_event id title desc top_event_dates =
                     </fieldset>
                     <fieldset role="group">
                         <input type="date" name="date-3">
-                        <select name="time-3" aria-label="Time">
+                        <select name="time-3" >
                           <option selected></option>
                           <option value="08:00:00">Morning 8:00 AM</option>
                           <option value="18:00:00">Evening 6:00 PM</option>
