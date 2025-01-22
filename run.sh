@@ -9,14 +9,13 @@ if [ "$#" -eq 1 ] && [ "$1" == "d" ]; then
     # database path
     export DB_PATH="/usr/home/data/db.sqlite"
 
-    # create container
+    # create and run the container, then purge resources upon exit
     docker create --name collectivae \
         --mount type=bind,source="/home/touny/Downloads",target="/usr/home/data" \
         --env DB_PATH \
         --publish 8080:8080 \
         collectivae-im:latest
 
-    docker start collectivae
     docker logs collectivae
 
     read -p 'press anything to stop the container and purge resources' tmp

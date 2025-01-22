@@ -1,6 +1,5 @@
 (executable
  (name main)
- ; (modes byte)
  (libraries dream util pages)
  (preprocess (pps ppx_deriving.show lwt_ppx))
 )
