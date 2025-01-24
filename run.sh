@@ -16,6 +16,7 @@ if [ "$#" -eq 1 ] && [ "$1" == "d" ]; then
         --publish 8080:8080 \
         collectivae-im:latest
 
+    docker start collectivae
     docker logs collectivae
 
     read -p 'press anything to stop the container and purge resources' tmp

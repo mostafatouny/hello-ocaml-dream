@@ -20,6 +20,7 @@ let () =
             (* redirect to events list *)
             Dream.redirect request "/event/events");
 
+    (* submit an attendee of an event *)
     Dream.get "/attendee/submit"
         (fun request ->
             (* fetch submission as a list of key-value pairs. e.g. [ ("firstname", "john"); ("lastname", "doe"); .. ] *)
@@ -36,12 +37,19 @@ let () =
                         getVal "position")
                     |> Dream.sql request in
 
-            (* insert guest's available dates into guest_event table *)
-            let%lwt _ = Qr.insert_guest_event (
+            (* event id *)
+            let event_id = getVal "event_id" |> int_of_string in
+            (* dates strings suffix in iso format *)
+            let datesList = List.drop 6 keyValueList |> List.map (fun t -> snd t) in
+
+            (* loop on the dates *)
+            let%lwt _ = datesList |> Lwt_list.iter_s (fun date ->
+                    (* for each, insert for the created guest *)
+                    Qr.insert_guest_event (
                         retrieved_guest_id,
-                        getVal "event_id" |> int_of_string,
-                        getVal "date-1" ^ " " ^ getVal "time-1")
-                    |> Dream.sql request in
+                        event_id,
+                        date)
+                    |> Dream.sql request) in
 
             (* alarm success *)
             Dream.redirect request "/alert?title=Success&para=your+submission+is+received");
