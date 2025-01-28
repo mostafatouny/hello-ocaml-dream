@@ -23,7 +23,7 @@ let event id title desc top_event_dates =
                         </tr>
                     </thead>
                     <tbody>
-%                       top_event_dates |> List.filter (fun t-> snd t > 0 ) |> List.iter (fun (date, count) ->
+%                       top_event_dates |> List.filter (fun t-> snd t > 0) |> List.iter (fun (date, count) ->
                             <tr>
                                 <td> <%s Util.Date.dateIsoToName date %> </td>
                                 <td> <%s string_of_int(count) %> </td>
@@ -56,8 +56,9 @@ let event id title desc top_event_dates =
                     <h5> Available Dates </h5>
                     <div id="date-inputs">
                         <select name="date-1" required>
+                            <option selected disabled> </option>
 %                           top_event_dates |> List.iter (fun (date, _) ->
-                                <option value="<%s date %>" > <%s Util.Date.dateIsoToName date %> </option>
+                                <option value="<%s date %>"> <%s Util.Date.dateIsoToName date %> </option>
                             <% ); %>
                         </select>
                     </div>
@@ -66,7 +67,7 @@ let event id title desc top_event_dates =
                         <button type="button" id="remove-date" disabled>Remove Date</button>
                     </fieldset>
 
-                    <fieldset role="group">
+                   <fieldset role="group">
                         <button type="submit">Submit</button>
                         <input type="reset">
                     </fieldset>
