@@ -96,9 +96,9 @@ let () =
     Dream.get "/event/:event_id"
         (fun request ->
             let event_id = Dream.param request "event_id" |> int_of_string in
-            let%lwt (name, desc) = Dream.sql request (Qr.fetch_event event_id) in
+            let%lwt (name, desc, date, place) = Dream.sql request (Qr.fetch_event event_id) in
             let%lwt top_event_dates = Dream.sql request (Qr.fetch_top_event_dates event_id) in
-                Pages.Template.event event_id name desc top_event_dates |> Dream.html);
+                Pages.Template.event event_id name desc date place top_event_dates |> Dream.html);
     
     (* expects title, para *)
     (* e.g /alert?title=Success&para=feel+free+to+close *)

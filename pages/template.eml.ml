@@ -1,5 +1,5 @@
 (* event *)
-let event id title desc top_event_dates =
+let event id title desc date place top_event_dates =
     <html>
     <%s! Component.head title %>
     <body>
@@ -7,19 +7,37 @@ let event id title desc top_event_dates =
 
         <main>
             <article>
-                <div style="text-align:center;">
-                    <h3> <%s title %> </h3>
-                    <%s desc %>
-                </div>
+                <h3 style="text-align:center;"> <%s title %> </h3>
+
+%               begin match date with
+%               | Some s ->
+                <span style="text-align:center;"> Date &emsp; <%s Util.Date.dateIsoToName s %> </span><br>
+%               | None ->
+
+%               end;
+                
+%               begin match place with
+%               | Some s ->
+                <span style="text-align:center;"> Place &emsp; <%s s %> </span><br>
+%               | None ->
+
+%               end;
+
+%               begin match desc with
+%               | Some s ->
+                <br><span style="white-space: pre-wrap;"> <%s s %> </span><br>
+%               | None ->
+
+%               end;
             </article>
             
             <article>
-                <header> Top Available Dates </header>
+                <header> Top Dates Submissions </header>
                 <table>
                     <thead>
                         <tr>
                             <td> Date </td>
-                            <td> Available Count </td>
+                            <td> Count </td>
                         </tr>
                     </thead>
                     <tbody>
@@ -53,10 +71,16 @@ let event id title desc top_event_dates =
                         <input type="text" name="position" placeholder="Position" required />
                     </fieldset>
 
+%                   begin match date with
+%                   | Some s ->
+                    <h5> Date </h5>
+                    <select name="date-1" required>
+                        <option value="<%s s %>" selected> <%s Util.Date.dateIsoToName s %> </option>
+                    </select>
+%                   | None ->
                     <h5> Available Dates </h5>
                     <div id="date-inputs">
                         <select name="date-1" required>
-                            <option selected disabled> </option>
 %                           top_event_dates |> List.iter (fun (date, _) ->
                                 <option value="<%s date %>"> <%s Util.Date.dateIsoToName date %> </option>
                             <% ); %>
@@ -64,8 +88,9 @@ let event id title desc top_event_dates =
                     </div>
                     <fieldset role="group">
                         <button type="button" id="add-date">Add Date</button>
-                        <button type="button" id="remove-date" disabled>Remove Date</button>
+                        <button type="button" id="remove-date">Remove Date</button>
                     </fieldset>
+%                   end;
 
                    <fieldset role="group">
                         <button type="submit">Submit</button>
@@ -102,7 +127,7 @@ let eventsList publicEvents =
                             <td> <a href= <%s "/event/" ^ string_of_int(id) %> > <%s name %> </a> </td>
 %                           begin match date with
 %                           | Some s ->
-                            <td> <%s s %> </td>
+                            <td> <%s Util.Date.dateIsoToName s %> </td>
 %                           | None ->
                             <td> </td>
 %                           end;
@@ -143,7 +168,7 @@ let createEvent =
                     
                     <fieldset role="group">
                         <button type="button" id="add-date">Add Date</button>
-                        <button type="button" id="remove-date" disabled>Remove Date</button>
+                        <button type="button" id="remove-date">Remove Date</button>
                     </fieldset>
 
                     <fieldset role="group">

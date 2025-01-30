@@ -28,6 +28,9 @@ if [ "$#" -eq 1 ] && [ "$1" == "d" ]; then
 
 # local opam
 else
+    # source env of local project
+    eval $(opam env)
+
     # set db path env variable
     export DB_PATH="./db.sqlite"
 

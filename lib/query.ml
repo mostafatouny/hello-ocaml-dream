@@ -4,8 +4,8 @@ module T = Caqti_type
 let fetch_event =
     let query =
         let open Caqti_request.Infix in
-        ( T.int ->! T.(t2 string string) )
-        ("SELECT name, desc FROM event WHERE id==$1") in
+        ( T.int ->! T.(t4 string (option string) (option string) (option string)) )
+        ("SELECT name, desc, date, place FROM event WHERE id==$1") in
     fun id (module Db : DB) ->
         let%lwt response_or_error = Db.find query id in
         Caqti_lwt.or_fail response_or_error

@@ -37,26 +37,35 @@ let interactiveAddDeleteButtons containerId inputName =
             let count = 1;
 
             const dateInputsContainer = document.getElementById("<%s containerId %>");
+
             const addDateButton = document.getElementById("add-date");
             const removeDateButton = document.getElementById("remove-date");
+
             const input_1 = document.getElementsByName("<%s inputName %>-1")[0];
+            let maxCount = 5;
+            if (input_1.tagName === "SELECT") { maxCount = input_1.options.length;}
+
+            removeDateButton.disabled = true;
+            if (count == maxCount) { addDateButton.disabled = true; }
 
             addDateButton.addEventListener("click", function() {
-                count++;
-                const newInput = input_1.cloneNode(true);
-                newInput.name = `<%s inputName %>-${count}`;
-                dateInputsContainer.appendChild(newInput);
-                removeDateButton.disabled = false;
+                if (count < maxCount) {
+                    count++;
+                    const newInput = input_1.cloneNode(true);
+                    newInput.name = `<%s inputName %>-${count}`;
+                    dateInputsContainer.appendChild(newInput);
+                    removeDateButton.disabled = false;
+                }
+                if (count == maxCount) { addDateButton.disabled = true; }
             });
 
             removeDateButton.addEventListener("click", function() {
                 if (count > 1) {
                     dateInputsContainer.removeChild(dateInputsContainer.lastElementChild);
                     count--;
+                    addDateButton.disabled = false;
                 }
-                if (count === 1) {
-                    removeDateButton.disabled = true;
-                }
+                if (count === 1) { removeDateButton.disabled = true; }
             });
         });
     </script>
