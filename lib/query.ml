@@ -4,8 +4,8 @@ module T = Caqti_type
 let fetch_event =
     let query =
         let open Caqti_request.Infix in
-        ( T.int ->! T.(t4 string (option string) (option string) (option string)) )
-        ("SELECT name, desc, date, place FROM event WHERE id==$1") in
+        ( T.int ->! T.(t5 string (option string) (option string) (option string) int ) )
+        ("SELECT name, desc, date, place, submissionOpen FROM event WHERE id==$1") in
     fun id (module Db : DB) ->
         let%lwt response_or_error = Db.find query id in
         Caqti_lwt.or_fail response_or_error
@@ -63,21 +63,3 @@ let insert_event_date =
     fun (event_id, date) (module Db : DB) ->
         let%lwt unit_or_error = Db.exec query (event_id, date) in
         Caqti_lwt.or_fail unit_or_error
-
-(* let fetch_users = *)
-(*     let query = *)
-(*         let open Caqti_request.Infix in *)
-(*         (T.unit ->* T.(t7 int string string string int (option int) (option int))) *)
-(*         "SELECT id, name, password, email, userType_id, academic_id, industry_id FROM user" in *)
-(*     fun (module Db : DB) -> *)
-(*         let%lwt response_or_error = Db.collect_list query () in *)
-(*         Caqti_lwt.or_fail response_or_error *)
-(**)
-(* let fetch_events = *)
-(*     let query = *)
-(*         let open Caqti_request.Infix in *)
-(*         (T.unit ->* T.(t4 int string string string )) *)
-(*         "SELECT id, name, place, date FROM event" in *)
-(*     fun (module Db : DB) -> *)
-(*         let%lwt response_or_error = Db.collect_list query () in *)
-(*         Caqti_lwt.or_fail response_or_error *)

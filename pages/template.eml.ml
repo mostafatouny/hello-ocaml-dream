@@ -1,5 +1,5 @@
 (* event *)
-let event id title desc date place top_event_dates =
+let event id title desc date place submissionOpen top_event_dates =
     <html>
     <%s! Component.head title %>
     <body>
@@ -51,6 +51,8 @@ let event id title desc date place top_event_dates =
                 </table>
             </article>
 
+
+%           if submissionOpen then begin
             <article>
                 <header> Submit </header>
                 <form action="/attendee/submit" method="get">
@@ -95,11 +97,19 @@ let event id title desc date place top_event_dates =
                    <fieldset role="group">
                         <button type="submit">Submit</button>
                         <input type="reset">
-                    </fieldset>
+                   </fieldset>
                 </form>
-            </article>
 
             <%s! Component.interactiveAddDeleteButtons "date-inputs" "date" %>
+            </article>
+%           end
+%           else begin
+            <article>
+                <h5 style="text-align:center;"> Submission Closed </h5>
+                Follow our <a href="https://www.freelists.org/list/public_math_egy_announcement">mailing list</a> for future announcements.
+            </article>
+%           end;
+
         </main>
     </body>
     </html>
